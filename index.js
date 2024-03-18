@@ -47,6 +47,35 @@ meuServidor.get('/usuarios', (requisicao, resposta) => {
     resposta.send(respostaUsuarios);
 });
 
+//Ver usuario pelo ID no chrome
+meuServidor.get('/usuarios/:usuarioId', (requisicao, resposta) => {
+    let respostaUsuarios = '';
+    const usuarioPesquisado = requisicao.params.usuarioId;
+    const usuarioEncontrado = listaUsuarios.find((usuarioAtual) => {
+        return usuarioAtual.id == usuarioPesquisado;
+    });
+    const usuario = usuarioEncontrado;
+    respostaUsuarios += '<p>';
+    respostaUsuarios += 'Código: ';
+    respostaUsuarios += usuario.id;
+    respostaUsuarios += '</br>Nome: ';
+    respostaUsuarios += usuario.nome;
+    respostaUsuarios += '</br>Idade: ';
+    respostaUsuarios += usuario.idade;
+    respostaUsuarios += '</br>CPF: ';
+    respostaUsuarios += usuario.CPF;
+
+    const cargoEncontrado = listaCargos.find(cargo => cargo.id === usuario.codigoCargo);
+    if (cargoEncontrado){
+        respostaUsuarios += '</br>Cargo:';
+        respostaUsuarios += cargoEncontrado.nome;
+        respostaUsuarios += '</br>Descrição:';
+        respostaUsuarios += cargoEncontrado.descricao;
+    }
+    respostaUsuarios += '</p>';
+    resposta.send(respostaUsuarios);
+});
+
 // Cadastra usuario
 meuServidor.post('/usuarios', (requisicao, resposta) => {
     const nome = requisicao.body.nome;
@@ -175,6 +204,26 @@ meuServidor.get('/cargos', (requisicao, resposta) => {
     }
     resposta.send(respostaCargos);
 });
+
+//Ver usuario pelo ID no chrome
+meuServidor.get('/cargos/:cargoId', (requisicao, resposta) => {
+    let respostaCargos = '';
+    const cargoPesquisado = requisicao.params.cargoId;
+    const cargoEncontrado = listaCargos.find((cargoAtual) => {
+        return cargoAtual.id == cargoPesquisado;
+    });
+    const cargo = cargoEncontrado;
+    respostaCargos += '<p>';
+    respostaCargos += 'Código: ';
+    respostaCargos += cargo.id;
+    respostaCargos += '</br>Nome: ';
+    respostaCargos += cargo.nome;
+    respostaCargos += '</br>Descricao: ';
+    respostaCargos += cargo.descricao;
+    respostaCargos += '</p>';
+    resposta.send(respostaCargos);
+});
+
 
 // Cadastra um cargo
 meuServidor.post('/cargos', (requisicao, resposta) => {
